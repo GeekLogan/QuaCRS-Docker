@@ -36,3 +36,4 @@ RUN apt-get --assume-yes install imagemagick
 RUN curl -o dependencies/GRCh37.p13.gtf.gz ftp://ftp.sanger.ac.uk/pub/gencode/Gencode_human/release_19/gencode.v19.annotation.gtf.gz
 RUN curl -o dependencies/GRCh37.p13.fa.gz ftp://ftp.sanger.ac.uk/pub/gencode/Gencode_human/release_19/GRCh37.p13.genome.fa.gz
 
+RUN mv FastQC/ dependencies/
