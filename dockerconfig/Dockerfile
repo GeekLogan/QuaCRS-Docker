@@ -1,5 +1,12 @@
 FROM ubuntu:latest
 
+ENV http_proxy 'http://10.127.20.41:8080'
+ENV https_proxy 'http://10.127.20.41:8080'
+ENV HTTP_PROXY 'http://10.127.20.41:8080'
+ENV HTTPS_PROXY 'http://10.127.20.41:8080'
+ENV FTP_PROXY 'http://10.127.20.41:8080'
+ENV ftp_proxy 'http://10.127.20.41:8080'
+
 RUN apt-get -y update
 RUN apt-get --assume-yes install software-properties-common
 
@@ -12,7 +19,7 @@ RUN echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 select true
 RUN apt-get --assume-yes install oracle-java8-installer
 
 RUN apt-get --assume-yes install git
-RUN apt-get --assume-yes install unzip python-pip
+RUN apt-get --assume-yes install unzip
 RUN apt-get --assume-yes install python-pip
 RUN apt-get --assume-yes install curl
 RUN apt-get --assume-yes install zlibc zlib1g-dev
@@ -28,7 +35,7 @@ RUN curl -o dependencies/fastqc.zip http://www.bioinformatics.babraham.ac.uk/pro
 RUN unzip dependencies/fastqc.zip
 RUN mv FastQC/ dependencies/
 
-RUN curl -o dependencies/picard.zip https://github.com/broadinstitute/picard/releases/download/2.3.0/picard-tools-2.3.0.zip
+ADD https://github.com/broadinstitute/picard/releases/download/2.3.0/picard-tools-2.3.0.zip dependencies/picard.zip
 RUN unzip dependencies/picard.zip
 RUN mv picard* dependencies/
 
@@ -42,17 +49,16 @@ RUN curl -o dependencies/GRCh37.p13.fa.gz ftp://ftp.sanger.ac.uk/pub/gencode/Gen
 
 RUN gunzip /dependencies/*.gz
 
-RUN mv FastQC/ dependencies/
 RUN chmod +x /*/*/fastqc
 
 RUN echo "WGF=$(find / | fgrep GRCh37 | fgrep fa)" > /QuaCRS/QC_Pack/tools.cfg
 RUN echo "ANNOT=$(find / | fgrep GRCh37 | fgrep gtf)" >> /QuaCRS/QC_Pack/tools.cfg
-RUN echo "ANNOT_BED" >> /QuaCRS/QC_Pack/tools.cfg
+RUN echo "ANNOT_BED=" >> /QuaCRS/QC_Pack/tools.cfg
 RUN echo "FASTQC_EXEC=$(find / | fgrep fastqc | fgrep -v .)" >> /QuaCRS/QC_Pack/tools.cfg
-RUN echo "PICARD_JAR=$(find / | fgrep picard | fgrep jar | fgrep -v -)" >> /QuaCRS/QC_Pack/tools.cfg
+RUN echo "PICARD_JAR=$(find / -name "picard.jar)" >> /QuaCRS/QC_Pack/tools.cfg
 RUN echo "RNASEQC_JAR=$(find / | fgrep RNASeQC | fgrep jar)" >> /QuaCRS/QC_Pack/tools.cfg
 RUN echo "SAMTOOLS_EXEC=$(which samtools)" >> /QuaCRS/QC_Pack/tools.cfg
-RUN echo "RSEQC_DIR=$(find / | fgrep read_quality.py | fgrep -v pyc)" >> /QuaCRS/QC_Pack/tools.cfg
+RUN echo "RSEQC_DIR=$(find / -name "read_quality.py" | sed 's/read_quality.py//')" >> /QuaCRS/QC_Pack/tools.cfg
 RUN echo "FEATURECOUNTS_EXEC=$(find / | fgrep featureCounts | fgrep -v man)" >> /QuaCRS/QC_Pack/tools.cfg
 RUN echo "lncRNA_genes=" >> /QuaCRS/QC_Pack/tools.cfg
 RUN echo "lincRNA_genes=$(find / | fgrep linc)" >> /QuaCRS/QC_Pack/tools.cfg
