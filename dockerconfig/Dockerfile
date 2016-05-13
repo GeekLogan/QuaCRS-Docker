@@ -26,14 +26,41 @@ RUN curl -o dependencies/RNASeQC.jar http://www.broadinstitute.org/cancer/cga/to
 RUN pip install RSeQC
 RUN curl -o dependencies/fastqc.zip http://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.5.zip
 RUN unzip dependencies/fastqc.zip
+RUN mv FastQC/ dependencies/
+
+RUN curl -o dependencies/picard.zip https://github.com/broadinstitute/picard/releases/download/2.3.0/picard-tools-2.3.0.zip
+RUN unzip dependencies/picard.zip
+RUN mv picard* dependencies/
 
 RUN apt-get --assume-yes install subread
 RUN apt-get --assume-yes install samtools
-RUN apt-get --assume-yes install picard-tools
 RUN apt-get --assume-yes install ncurses-hexedit ncurses-term ncurses-base ncurses-bin ncurses-doc
 RUN apt-get --assume-yes install imagemagick
 
 RUN curl -o dependencies/GRCh37.p13.gtf.gz ftp://ftp.sanger.ac.uk/pub/gencode/Gencode_human/release_19/gencode.v19.annotation.gtf.gz
 RUN curl -o dependencies/GRCh37.p13.fa.gz ftp://ftp.sanger.ac.uk/pub/gencode/Gencode_human/release_19/GRCh37.p13.genome.fa.gz
 
+RUN gunzip /dependencies/*.gz
+
 RUN mv FastQC/ dependencies/
+RUN chmod +x /*/*/fastqc
+
+RUN echo "WGF=$(find / | fgrep GRCh37 | fgrep fa)" > /QuaCRS/QC_Pack/tools.cfg
+RUN echo "ANNOT=$(find / | fgrep GRCh37 | fgrep gtf)" >> /QuaCRS/QC_Pack/tools.cfg
+RUN echo "ANNOT_BED" >> /QuaCRS/QC_Pack/tools.cfg
+RUN echo "FASTQC_EXEC=$(find / | fgrep fastqc | fgrep -v .)" >> /QuaCRS/QC_Pack/tools.cfg
+RUN echo "PICARD_JAR=$(find / | fgrep picard | fgrep jar | fgrep -v -)" >> /QuaCRS/QC_Pack/tools.cfg
+RUN echo "RNASEQC_JAR=$(find / | fgrep RNASeQC | fgrep jar)" >> /QuaCRS/QC_Pack/tools.cfg
+RUN echo "SAMTOOLS_EXEC=$(which samtools)" >> /QuaCRS/QC_Pack/tools.cfg
+RUN echo "RSEQC_DIR=$(find / | fgrep read_quality.py | fgrep -v pyc)" >> /QuaCRS/QC_Pack/tools.cfg
+RUN echo "FEATURECOUNTS_EXEC=$(find / | fgrep featureCounts | fgrep -v man)" >> /QuaCRS/QC_Pack/tools.cfg
+RUN echo "lncRNA_genes=" >> /QuaCRS/QC_Pack/tools.cfg
+RUN echo "lincRNA_genes=$(find / | fgrep linc)" >> /QuaCRS/QC_Pack/tools.cfg
+RUN echo "coding_genes=$(find / | fgrep coding | fgrep gene)" >> /QuaCRS/QC_Pack/tools.cfg
+RUN echo "housekeeping_genes=" >> /QuaCRS/QC_Pack/tools.cfg
+RUN echo "other_genes=" >> /QuaCRS/QC_Pack/tools.cfg
+RUN echo "threads=6" >> /QuaCRS/QC_Pack/tools.cfg
+RUN echo "#end" >> /QuaCRS/QC_Pack/tools.cfg
+
+
+
