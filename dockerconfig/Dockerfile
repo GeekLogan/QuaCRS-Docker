@@ -1,11 +1,11 @@
 FROM ubuntu:latest
 
-ENV http_proxy 'http://10.127.20.41:8080'
-ENV https_proxy 'http://10.127.20.41:8080'
-ENV HTTP_PROXY 'http://10.127.20.41:8080'
-ENV HTTPS_PROXY 'http://10.127.20.41:8080'
-ENV FTP_PROXY 'http://10.127.20.41:8080'
-ENV ftp_proxy 'http://10.127.20.41:8080'
+#ENV http_proxy 'http://10.127.20.41:8080'
+#ENV https_proxy 'http://10.127.20.41:8080'
+#ENV HTTP_PROXY 'http://10.127.20.41:8080'
+#ENV HTTPS_PROXY 'http://10.127.20.41:8080'
+#ENV FTP_PROXY 'http://10.127.20.41:8080'
+#ENV ftp_proxy 'http://10.127.20.41:8080'
 
 RUN apt-get -y update
 RUN apt-get --assume-yes install software-properties-common
@@ -44,11 +44,11 @@ RUN apt-get --assume-yes install samtools
 RUN apt-get --assume-yes install ncurses-hexedit ncurses-term ncurses-base ncurses-bin ncurses-doc
 RUN apt-get --assume-yes install imagemagick
 
-RUN curl -o dependencies/GRCh37.p13.gtf.gz ftp://ftp.sanger.ac.uk/pub/gencode/Gencode_human/release_19/gencode.v19.annotation.gtf.gz
-RUN curl -o dependencies/GRCh37.p13.fa.gz ftp://ftp.sanger.ac.uk/pub/gencode/Gencode_human/release_19/GRCh37.p13.genome.fa.gz
+#RUN curl -o dependencies/GRCh37.p13.gtf.gz ftp://ftp.sanger.ac.uk/pub/gencode/Gencode_human/release_19/gencode.v19.annotation.gtf.gz
+#RUN curl -o dependencies/GRCh37.p13.fa.gz ftp://ftp.sanger.ac.uk/pub/gencode/Gencode_human/release_19/GRCh37.p13.genome.fa.gz
+#RUN gunzip /dependencies/*.gz
 
-RUN gunzip /dependencies/*.gz
-
+RUN mkdir /dependencies/data
 RUN chmod +x /*/*/fastqc
 
 RUN echo "WGF=$(find / | fgrep GRCh37 | fgrep fa)" > /QuaCRS/QC_Pack/tools.cfg
@@ -68,5 +68,4 @@ RUN echo "other_genes=" >> /QuaCRS/QC_Pack/tools.cfg
 RUN echo "threads=6" >> /QuaCRS/QC_Pack/tools.cfg
 RUN echo "#end" >> /QuaCRS/QC_Pack/tools.cfg
 
-
-
+MAINTAINER Logan Walker <walker.1698@osu.edu>
