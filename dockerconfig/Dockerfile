@@ -1,5 +1,7 @@
 FROM ubuntu:latest
 
+MAINTAINER Logan Walker <walker.1698@osu.edu>
+
 #ENV http_proxy 'http://10.127.20.41:8080'
 #ENV https_proxy 'http://10.127.20.41:8080'
 #ENV HTTP_PROXY 'http://10.127.20.41:8080'
@@ -8,15 +10,17 @@ FROM ubuntu:latest
 #ENV ftp_proxy 'http://10.127.20.41:8080'
 
 RUN apt-get -y update
-RUN apt-get --assume-yes install software-properties-common
+#RUN apt-get --assume-yes install software-properties-common
 
-RUN add-apt-repository ppa:webupd8team/java
-RUN add-apt-repository ppa:openjdk-r/ppa
-RUN apt-get -y update
+#RUN add-apt-repository ppa:webupd8team/java
+#RUN add-apt-repository ppa:openjdk-r/ppa
+#RUN apt-get -y update
 
-RUN apt-get --assume-yes install openjdk-7-jdk
-RUN echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections
-RUN apt-get --assume-yes install oracle-java8-installer
+#RUN apt-get --assume-yes install openjdk-7-jdk
+#RUN echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections
+#RUN apt-get --assume-yes install oracle-java8-installer
+
+RUN apt-get --assume-yes install openjdk-8-jdk-headless 
 
 RUN apt-get --assume-yes install git
 RUN apt-get --assume-yes install unzip
@@ -51,8 +55,8 @@ RUN apt-get --assume-yes install imagemagick
 RUN mkdir /dependencies/data
 RUN chmod +x /*/*/fastqc
 
-RUN echo "WGF=$(find / | fgrep GRCh37 | fgrep fa)" > /QuaCRS/QC_Pack/tools.cfg
-RUN echo "ANNOT=$(find / | fgrep GRCh37 | fgrep gtf)" >> /QuaCRS/QC_Pack/tools.cfg
+RUN echo "WGF=" > /QuaCRS/QC_Pack/tools.cfg
+RUN echo "ANNOT=" >> /QuaCRS/QC_Pack/tools.cfg
 RUN echo "ANNOT_BED=" >> /QuaCRS/QC_Pack/tools.cfg
 RUN echo "FASTQC_EXEC=$(find / | fgrep fastqc | fgrep -v .)" >> /QuaCRS/QC_Pack/tools.cfg
 RUN echo "PICARD_JAR=$(find / -name 'picard.jar')" >> /QuaCRS/QC_Pack/tools.cfg
@@ -61,11 +65,9 @@ RUN echo "SAMTOOLS_EXEC=$(which samtools)" >> /QuaCRS/QC_Pack/tools.cfg
 RUN echo "RSEQC_DIR=$(find / -name "read_quality.py" | sed 's/read_quality.py//')" >> /QuaCRS/QC_Pack/tools.cfg
 RUN echo "FEATURECOUNTS_EXEC=$(find / | fgrep featureCounts | fgrep -v man)" >> /QuaCRS/QC_Pack/tools.cfg
 RUN echo "lncRNA_genes=" >> /QuaCRS/QC_Pack/tools.cfg
-RUN echo "lincRNA_genes=$(find / | fgrep linc)" >> /QuaCRS/QC_Pack/tools.cfg
-RUN echo "coding_genes=$(find / | fgrep coding | fgrep gene)" >> /QuaCRS/QC_Pack/tools.cfg
+RUN echo "lincRNA_genes=" >> /QuaCRS/QC_Pack/tools.cfg
+RUN echo "coding_genes=" >> /QuaCRS/QC_Pack/tools.cfg
 RUN echo "housekeeping_genes=" >> /QuaCRS/QC_Pack/tools.cfg
 RUN echo "other_genes=" >> /QuaCRS/QC_Pack/tools.cfg
 RUN echo "threads=6" >> /QuaCRS/QC_Pack/tools.cfg
-RUN echo "#end" >> /QuaCRS/QC_Pack/tools.cfg
 
-MAINTAINER Logan Walker <walker.1698@osu.edu>
