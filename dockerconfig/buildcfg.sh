@@ -1,3 +1,5 @@
+echo "Building tools.cfg..."
+echo
 echo "WGF=$(find /reference -name *.fa)" > /QuaCRS/QC_Pack/tools.cfg
 echo "ANNOT=$(find /reference -name *.gtf)" >> /QuaCRS/QC_Pack/tools.cfg
 echo "ANNOT_BED=$(find /reference -name *.bed)" >> /QuaCRS/QC_Pack/tools.cfg
