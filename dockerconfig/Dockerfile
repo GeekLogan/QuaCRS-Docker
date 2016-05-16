@@ -70,3 +70,6 @@ RUN echo "housekeeping_genes=" >> /QuaCRS/QC_Pack/tools.cfg
 RUN echo "other_genes=" >> /QuaCRS/QC_Pack/tools.cfg
 RUN echo "threads=6" >> /QuaCRS/QC_Pack/tools.cfg
 
+ADD ./buildcfg.sh /
+
+ENTRYPOINT sh /buildcfg.sh; cat /QuaCRS/QC_Pack/tools.cfg
