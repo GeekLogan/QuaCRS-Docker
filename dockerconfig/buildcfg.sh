@@ -13,3 +13,16 @@ echo "coding_genes=" >> /QuaCRS/QC_Pack/tools.cfg
 echo "housekeeping_genes=" >> /QuaCRS/QC_Pack/tools.cfg
 echo "other_genes=" >> /QuaCRS/QC_Pack/tools.cfg
 echo "threads=6" >> /QuaCRS/QC_Pack/tools.cfg
+
+echo
+echo "----------------------------------------------------------"
+echo "                   USING CONFIG AS FOLLOWS"
+echo "----------------------------------------------------------"
+echo
+
+echo "TOOLS.CFG:"
+cat /QuaCRS/QC_Pack/tools.cfg
+echo
+
+echo "----------------------------------------------------------"
+echo
