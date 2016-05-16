@@ -22,20 +22,26 @@ RUN apt-get -y update
 
 RUN apt-get --assume-yes install openjdk-8-jdk-headless 
 
-RUN apt-get --assume-yes install git
+#RUN apt-get --assume-yes install git
 RUN apt-get --assume-yes install unzip
 RUN apt-get --assume-yes install python-pip
-RUN apt-get --assume-yes install curl
-RUN apt-get --assume-yes install zlibc zlib1g-dev
+#RUN apt-get --assume-yes install curl
+RUN apt-get --assume-yes install zlibc
+# zlib1g-dev
 
-RUN git clone https://github.com/kwkroll32/QuaCRS.git
+#RUN git clone https://github.com/kwkroll32/QuaCRS.git
+ADD https://github.com/kwkroll32/QuaCRS/archive/master.zip /
+RUN unzip master.zip
+RUN mv QuaCRS-master/ QuaCRS/
 RUN rm -R QuaCRS/QC_Database
 
 RUN mkdir dependencies
 
-RUN curl -o dependencies/RNASeQC.jar http://www.broadinstitute.org/cancer/cga/tools/rnaseqc/RNA-SeQC_v1.1.8.jar
+#RUN curl -o dependencies/RNASeQC.jar http://www.broadinstitute.org/cancer/cga/tools/rnaseqc/RNA-SeQC_v1.1.8.jar
+ADD http://www.broadinstitute.org/cancer/cga/tools/rnaseqc/RNA-SeQC_v1.1.8.jar /dependencies/RNASeQC.jar
 RUN pip install RSeQC
-RUN curl -o dependencies/fastqc.zip http://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.5.zip
+#RUN curl -o dependencies/fastqc.zip http://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.5.zip
+ADD http://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.5.zip dependencies/fastqc.zip
 RUN unzip dependencies/fastqc.zip
 RUN mv FastQC/ dependencies/
 
@@ -45,7 +51,7 @@ RUN mv picard* dependencies/
 
 RUN apt-get --assume-yes install subread
 RUN apt-get --assume-yes install samtools
-RUN apt-get --assume-yes install ncurses-hexedit ncurses-term ncurses-base ncurses-bin ncurses-doc
+RUN apt-get --assume-yes install ncurses-term ncurses-base ncurses-bin
 RUN apt-get --assume-yes install imagemagick
 
 #RUN curl -o dependencies/GRCh37.p13.gtf.gz ftp://ftp.sanger.ac.uk/pub/gencode/Gencode_human/release_19/gencode.v19.annotation.gtf.gz
