@@ -52,7 +52,6 @@ RUN apt-get --assume-yes install imagemagick
 #RUN curl -o dependencies/GRCh37.p13.fa.gz ftp://ftp.sanger.ac.uk/pub/gencode/Gencode_human/release_19/GRCh37.p13.genome.fa.gz
 #RUN gunzip /dependencies/*.gz
 
-RUN mkdir /dependencies/data
 RUN chmod +x /*/*/fastqc
 
 RUN echo "WGF=" > /QuaCRS/QC_Pack/tools.cfg
